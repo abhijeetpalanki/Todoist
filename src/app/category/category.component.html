@@ -1,0 +1,89 @@
+<div class="row justify-content-center mb-3">
+  <div class="col-md-4 text-center">
+    <h1 class="">TODO CATEGORIES</h1>
+    <p class="text-info">
+      Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+    </p>
+  </div>
+</div>
+
+<form
+  #f="ngForm"
+  (ngSubmit)="f.form.valid && onSubmit(f)"
+  class="row"
+  role="form"
+>
+  <div class="col-md-10">
+    <input
+      type="text"
+      placeholder="Add new categories here"
+      name="categoryName"
+      class="form-control drop-shadow"
+      [(ngModel)]="categoryName"
+      [ngClass]="{ 'border-danger': f.submitted && category.invalid }"
+      required
+      #category="ngModel"
+    />
+  </div>
+  <div class="col-md-2">
+    <button
+      type="submit"
+      class="btn btn-primary btn-todo btn-block drop-shadow w-100"
+    >
+      {{ dataStatus }}
+    </button>
+  </div>
+  <div
+    class="text-danger"
+    *ngIf="f.submitted && category.invalid && category.errors?.required"
+  >
+    Category is required...
+  </div>
+</form>
+
+<div class="row categories-list">
+  <div class="col-md-3" *ngFor="let category of categories">
+    <div
+      class="card drop-shadow"
+      [ngStyle]="{ 'border-left-color': category.colorCode }"
+    >
+      <div class="card-body">
+        <div class="clearfix">
+          <div class="float-start">
+            <div class="badge badge-primary">CATEGORY</div>
+          </div>
+          <div class="float-end cat-tools">
+            <small>
+              <i
+                (click)="onEdit(category, category.id)"
+                class="fa fa-pencil-alt text-success"
+              ></i>
+            </small>
+            <small>
+              <i
+                (click)="onDelete(category.id)"
+                class="fas fa-trash text-danger"
+              ></i>
+            </small>
+          </div>
+        </div>
+
+        <div
+          class="todo-content"
+          [routerLink]="['/todo', category.id]"
+          [queryParams]="{ id: category.id }"
+        >
+          <h3 [ngStyle]="{ color: category.colorCode }">
+            {{ category.category }}
+          </h3>
+          <small class="text-secondary"
+            >Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus
+            praesentium,
+          </small>
+        </div>
+
+        <span class="badge badge-danger">{{ category.todoCount }} - Todos</span>
+      </div>
+    </div>
+  </div>
+</div>

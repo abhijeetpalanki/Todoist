@@ -1,0 +1,84 @@
+<div class="row justify-content-center md-3">
+  <div class="col-md-4 text-center">
+    <h1 class="">TODOS</h1>
+    <p class="text-info">
+      Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+    </p>
+  </div>
+</div>
+
+<form
+  #f="ngForm"
+  (ngSubmit)="f.form.valid && onSubmit(f)"
+  class="row"
+  role="form"
+>
+  <div class="col-md-10">
+    <input
+      type="text"
+      placeholder="Add new Todos here"
+      name="todoText"
+      class="form-control drop-shadow"
+      [(ngModel)]="todoValue"
+      [ngClass]="{ 'border-danger': f.submitted && todo.invalid }"
+      required
+      #todo="ngModel"
+    />
+  </div>
+  <div class="col-md-2">
+    <button
+      type="submit"
+      class="btn btn-primary btn-todo btn-block drop-shadow w-100"
+    >
+      {{ dataStatus }}
+    </button>
+  </div>
+  <div
+    class="text-danger"
+    *ngIf="f.submitted && todo.invalid && todo.errors?.required"
+  >
+    Todo is required...
+  </div>
+</form>
+
+<div class="row todo-list justify-content-center">
+  <div class="col-md-6">
+    <div class="card" *ngFor="let todo of todos">
+      <div class="card-body">
+        <div class="clearfix">
+          <div class="float-start text-secondary">
+            <i class="far fa-circle text-danger" *ngIf="!todo.isCompleted"></i>
+            <i class="fas fa-check text-success" *ngIf="todo.isCompleted"></i>
+            {{ todo.todo }}
+            <hr *ngIf="todo.isCompleted" />
+          </div>
+
+          <div class="float-end">
+            <i
+              (click)="completeTodo(todo.id)"
+              *ngIf="!todo.isCompleted"
+              class="far fa-check-circle text-success"
+            ></i>
+            <i
+              (click)="uncompleteTodo(todo.id)"
+              *ngIf="todo.isCompleted"
+              class="far fa-times-circle text-danger"
+            ></i>
+            <div class="todo-tools">
+              <small>
+                <i
+                  (click)="onEdit(todo.todo, todo.id)"
+                  class="fas fa-pencil-alt text-warning"
+                ></i>
+                <i
+                  (click)="onDelete(todo.id)"
+                  class="fas fa-trash text-danger"
+                ></i>
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
